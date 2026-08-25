@@ -1,9 +1,10 @@
 import React from 'react'
+import LeadsFrom from './leadsform/page'
 
 const page = () => {
-  return (
-    <div>page</div>
-  )
+  return <>
+  <LeadsFrom/>
+  </>
 }
 
 export default page
