@@ -40,6 +40,13 @@ const Dashboard = (initialValue) => {
     }
   }, []);
 
+  const handleDeleteMsg = () => {
+    setDeleteMsg(true);
+    setTimeout(() => {
+      setDeleteMsg(false);
+    }, 1000);
+  };
+
   return (
     <main
       className={`min-h-screen p-5 md:p-8 md:pl-24 ${
@@ -134,6 +141,7 @@ const Dashboard = (initialValue) => {
                         const updateData = await handleDelete(user.id);
                         if (updateData) {
                           setUsers(updateData);
+                          handleDeleteMsg();
                         }
                       }}
                       className="rounded-md p-2 text-red-600 hover:bg-red-100"
