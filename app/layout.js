@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "../components/header/Header";
 import { ThemeContext } from "@/context/ThemeContext";
 import Footer from "@/components/footer/Footer";
+import { SuccessFullyMsg } from "@/context/SuccessFullyMsg";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,10 +28,11 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col">
         <ThemeContext>
-
+          <SuccessFullyMsg>
       <Header/>
         {children}
         {/* <Footer/> */}
+          </SuccessFullyMsg>
         </ThemeContext>
         </body>
     </html>

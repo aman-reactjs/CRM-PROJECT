@@ -1,5 +1,6 @@
 "use client";
 
+import { NotificationContext } from "@/context/SuccessFullyMsg";
 import { toggleContext } from "@/context/ThemeContext";
 import useform from "@/customHook/useForm";
 import React, { useContext, useState } from "react";
@@ -27,6 +28,7 @@ const LeadsFrom = () => {
 
   const { form, handleSubmit, handleChange } = useform(fromLead);
   const { theme } = useContext(toggleContext);
+  const { message } = useContext(NotificationContext);
 
   const validate = () => {
     let newErrors = {
@@ -99,6 +101,18 @@ const LeadsFrom = () => {
         theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100 text-black"
       }`}
     >
+      {message && (
+        <div className=" fixed top-12 md:top-10 left-[30%] md:left-[45%] z-20">
+          <p
+            className="p-2 rounded-lg border border-emerald-200
+         bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800
+           shadow-lg"
+          >
+            Successfully created lead
+          </p>
+        </div>
+      )}
+
       <div className="w-full min-h-[calc(100vh-3rem)] p-5 pb-5 md:pb-0 md:p-8">
         {/* Heading */}
         <h1 className={`text-2xl font-semibold mb-6 `}>Add New Lead</h1>

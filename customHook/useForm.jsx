@@ -1,8 +1,10 @@
+import { NotificationContext } from "@/context/SuccessFullyMsg";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 const useform = (initialValue) => {
   const [form, setForm] = useState(initialValue);
+  const { showSuccess } = useContext(NotificationContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,6 +44,7 @@ const useform = (initialValue) => {
       console.log("Error sending data", error);
     }
     setForm(initialValue);
+    showSuccess();
   };
 
   const handleDelete = async (id) => {
