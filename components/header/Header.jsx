@@ -109,6 +109,9 @@ const Header = () => {
               }`}
             >
               {theme === "light" ? <Sun /> : <Moon />}
+              <span className="text-[10px]">
+                {theme === "light" ? "Light Mode" : "Dark Mode"}
+              </span>
             </button>
           </ul>
         </div>

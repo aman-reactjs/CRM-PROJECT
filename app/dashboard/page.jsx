@@ -1,18 +1,23 @@
 "use client";
 
-import { toggleContext } from "@/context/ThemeContext";
-import useForm from "@/customHook/useForm";
-import { Edit, Trash2 } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
+import { Edit, Trash2 } from "lucide-react";
+import { toggleContext } from "@/context/ThemeContext";
+import axios from "axios";
+import useform from "@/customHook/useForm";
+import SearchFilter from "@/components/filterComponent/SearchFilter";
+import useSearchFilter from "@/customHook/useSearchFilter";
 
 const Dashboard = (initialValue) => {
   const { form, handleDelete, handleEdit, setForm, handleChange } =
-    useForm(initialValue); //  this is custom hooks
-
+    useform(initialValue); //  this is custom hooks
+  const [filter, setFilter] = useState("All"); ///// this is for managing filter
+  const [search, setSearch] = useState(""); ///// this is for managing search
   const { theme } = useContext(toggleContext); /////// we import it from context api for theme changing
   const [users, setUsers] = useState([]); //// this is for showing data on the screen
   const [deleteMsg, setDeleteMsg] = useState(false); ///// this is for showing pop up msg when msg deleted
   const [editUser, setEditUser] = useState(null); // this is for edit or update leads
+  const filteredUsers = useSearchFilter(users, search, filter); ////// this is for useSearchFilter custom hook
 
   useEffect(() => {
     let getSavedLeadsData = localStorage.getItem("leads");
@@ -44,9 +49,8 @@ const Dashboard = (initialValue) => {
     setDeleteMsg(true);
     setTimeout(() => {
       setDeleteMsg(false);
-    }, 1000);
+    }, 3000);
   };
-
   return (
     <main
       className={`min-h-screen p-5 md:p-8 md:pl-24 ${
@@ -68,6 +72,16 @@ const Dashboard = (initialValue) => {
             All Created Leads
           </p>
         </div>
+        <div>
+          {
+            <SearchFilter
+              filter={filter}
+              search={search}
+              setSearch={setSearch}
+              setFilter={setFilter}
+            />
+          }
+        </div>
       </div>
 
       {/* Table Container */}
@@ -87,7 +101,7 @@ const Dashboard = (initialValue) => {
           </thead>
 
           <tbody>
-            {users.map((user) => (
+            {filteredUsers.map((user) => (
               <tr
                 key={user.id}
                 className={`border-t ${
@@ -150,6 +164,111 @@ const Dashboard = (initialValue) => {
                       <Trash2 size={17} />
                     </button>
                   </div>
+
+                  {/* this will visible when edit button will be clicked */}
+                  {editUser && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-black/10">
+                      <div
+                        className={`w-96 rounded-lg p-5 ${
+                          theme === "light" ? "bg-gray-50" : "bg-gray-600"
+                        }`}
+                      >
+                        <h2 className="mb-4 text-xl font-bold">Edit Lead</h2>
+
+                        <input
+                          type="text"
+                          placeholder="Enter lead name"
+                          name="name"
+                          value={form.name || ""}
+                          onChange={handleChange}
+                          className="w-full h-10 rounded-md border border-gray-300 px-3 text-sm outline-none focus:border-blue-500 py-2 mb-3"
+                        />
+
+                        <input
+                          type="text"
+                          placeholder="Enter email"
+                          name="email"
+                          value={form.email || ""}
+                          onChange={handleChange}
+                          className="w-full h-10 rounded-md border border-gray-300 px-3 text-sm outline-none focus:border-blue-500 py-2 mb-3"
+                        />
+
+                        <input
+                          type="tel"
+                          maxLength={10}
+                          name="phone"
+                          value={form.phone}
+                          placeholder="+(91) 010-XXXX "
+                          className="w-full h-10 rounded-md border border-gray-300 px-3 text-sm outline-none focus:border-blue-500 py-2 mb-3"
+                          onChange={handleChange}
+                        />
+
+                        <input
+                          type="text"
+                          name="company"
+                          placeholder="Enter company name"
+                          value={form.company || ""}
+                          onChange={handleChange}
+                          className="w-full h-10 rounded-md border border-gray-300 px-3 text-sm outline-none focus:border-blue-500 py-2 mb-3"
+                        />
+
+                        <select
+                          name="source"
+                          value={form.source || ""}
+                          onChange={handleChange}
+                          className="w-full h-10 rounded-md border border-gray-300 px-3 text-sm outline-none focus:border-blue-500 py-2 mb-3"
+                        >
+                          <option value="website">Website</option>
+                          <option value="referral">Referral</option>
+                          <option value="linkedin">LinkedIn</option>
+                          <option value="other">Other</option>
+                        </select>
+
+                        <select
+                          name="status"
+                          value={form.status || ""}
+                          onChange={handleChange}
+                          className="mb-3 w-full rounded border p-2"
+                        >
+                          <option value="new">New</option>
+                          <option value="contacted">Contacted</option>
+                          <option value="follow-up">Follow-up</option>
+                          <option value="converted">Converted</option>
+                          <option value="lost">Lost</option>
+                        </select>
+
+                        <textarea
+                          rows="4"
+                          placeholder="Enter notes"
+                          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none resize-none focus:border-blue-500 py-2 mb-3"
+                          name="notes"
+                          value={form.notes}
+                          onChange={handleChange}
+                        />
+
+                        <button
+                          onClick={async () => {
+                            const updatedData = await handleEdit(form.id);
+
+                            if (updatedData) {
+                              setUsers(updatedData);
+                              setEditUser(null);
+                            }
+                          }}
+                          className="rounded bg-blue-600 px-4 py-2 text-white"
+                        >
+                          Update
+                        </button>
+
+                        <button
+                          onClick={() => setEditUser(null)}
+                          className="ml-2 rounded bg-gray-300 px-4 py-2"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </td>
               </tr>
             ))}
