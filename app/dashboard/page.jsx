@@ -18,6 +18,7 @@ const Dashboard = (initialValue) => {
   const [deleteMsg, setDeleteMsg] = useState(false); ///// this is for showing pop up msg when msg deleted
   const [editUser, setEditUser] = useState(null); // this is for edit or update leads
   const filteredUsers = useSearchFilter(users, search, filter); ////// this is for useSearchFilter custom hook
+  
 
   useEffect(() => {
     let getSavedLeadsData = localStorage.getItem("leads");

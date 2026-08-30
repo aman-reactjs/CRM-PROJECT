@@ -1,10 +1,5 @@
-import React from 'react'
-import LeadsFrom from './leadsform/page'
+import { redirect } from "next/navigation";
 
-const page = () => {
-  return <>
-  <LeadsFrom/>
-  </>
+export default function Page() {
+  redirect("/leadsform");
 }
-
-export default page

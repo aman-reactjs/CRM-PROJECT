@@ -1,0 +1,24 @@
+// creating header and side bar
+
+
+//dashboard page
+// add forms 
+
+// create leads Dashboard page 
+
+//add functionality
+//create dark mode and light mode feature
+
+//generates leads
+// i am using api https://jsonplaceholder.typicode.com/users
+// fetching data from api
+
+// storing data in localstorage
+
+//edit and delete leads feature
+
+// adding search and filter feature 
+// we can filter by name and company name
+
+//upload on github
+// finally deploy on versel

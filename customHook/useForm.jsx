@@ -4,7 +4,7 @@ import React, { useContext, useState } from "react";
 
 const useform = (initialValue) => {
   const [form, setForm] = useState(initialValue);
-  const { showSuccess } = useContext(NotificationContext);
+  const { showSuccess, showApiError } = useContext(NotificationContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,11 +40,15 @@ const useform = (initialValue) => {
 
       //  Updated leads ko localStorage mein save karo
       localStorage.setItem("leads", JSON.stringify(updatedLeads));
+      showSuccess();
     } catch (error) {
-      console.log("Error sending data", error);
+      showApiError(
+        error.response?.data?.message ||
+          error.message ||
+          "Something went wrong",
+      );
     }
     setForm(initialValue);
-    showSuccess();
   };
 
   const handleDelete = async (id) => {
@@ -60,7 +64,11 @@ const useform = (initialValue) => {
 
       return updateData;
     } catch (error) {
-      console.log(error);
+      showApiError(
+        error.response?.data?.message ||
+          error.message ||
+          "Something went wrong",
+      );
     }
   };
 
@@ -85,8 +93,12 @@ const useform = (initialValue) => {
       localStorage.setItem("leads", JSON.stringify(editData));
 
       return editData;
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      showApiError(
+        error.response?.data?.message ||
+          error.message ||
+          "Something went wrong",
+      );
     }
   };
 

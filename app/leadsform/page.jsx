@@ -28,7 +28,7 @@ const LeadsFrom = () => {
 
   const { form, handleSubmit, handleChange } = useform(fromLead);
   const { theme } = useContext(toggleContext);
-  const { message } = useContext(NotificationContext);
+  const { message, apiError } = useContext(NotificationContext);
 
   const validate = () => {
     let newErrors = {
@@ -109,6 +109,14 @@ const LeadsFrom = () => {
            shadow-lg"
           >
             Successfully created lead
+          </p>
+        </div>
+      )}
+
+      {apiError && (
+        <div className=" fixed top-12 md:top-10 left-[30%] md:left-[45%] z-20">
+          <p className="p-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700 shadow-lg">
+            {apiError}
           </p>
         </div>
       )}
